@@ -128,13 +128,17 @@ func TestValidateExpFail(t *testing.T) {
 
 func TestTraverse(t *testing.T) {
 
-	a := syntaxTreeNode{oper: 0, val: 5, nodes: nil}
-	b := syntaxTreeNode{oper: 0, val: 2, nodes: nil}
-	c := syntaxTreeNode{oper: 0, val: 0, nodes: []syntaxTreeNode{a, b}}
+	a := syntaxTreeNode{oper: byte('V'), val: 5, nodes: nil}
+	b := syntaxTreeNode{oper: byte('V'), val: 2, nodes: nil}
+	e := syntaxTreeNode{oper: byte('V'), val: 10, nodes: nil}
+	f := syntaxTreeNode{oper: byte('V'), val: 2, nodes: nil}
+	d := syntaxTreeNode{oper: byte('^'), val: 2, nodes: []syntaxTreeNode{e, f}}
+	c := syntaxTreeNode{oper: byte('+'), val: 0, nodes: []syntaxTreeNode{a, b, d}}
 
 	c.traverse()
-	for _, node := range c.nodes {
-		fmt.Println(node)
+	if c.val != 107 {
+		t.Fail()
+		fmt.Println(c.val)
 	}
 }
 

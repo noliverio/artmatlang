@@ -62,9 +62,12 @@ func (astnode *syntaxTreeNode) evaluate() {
 }
 
 func (astnode *syntaxTreeNode) traverse() {
-	for pos := range astnode.nodes {
-		astnode.nodes[pos].val += 5
+	for node := range astnode.nodes {
+		if astnode.nodes[node].oper != byte('V') {
+			astnode.nodes[node].traverse()
+		}
 	}
+	astnode.evaluate()
 }
 
 func (astnode *syntaxTreeNode) add() {
