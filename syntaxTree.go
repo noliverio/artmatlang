@@ -46,6 +46,27 @@ func validNodeCount(nodes []syntaxTreeNode, count int, exact bool) error {
 
 }
 
+func (astnode *syntaxTreeNode) evaluate() {
+	switch astnode.oper {
+	case byte('+'):
+		astnode.add()
+	case byte('-'):
+		astnode.subtract()
+	case byte('*'):
+		astnode.multiply()
+	case byte('/'):
+		astnode.divide()
+	case byte('^'):
+		astnode.exp()
+	}
+}
+
+func (astnode *syntaxTreeNode) traverse() {
+	for pos := range astnode.nodes {
+		astnode.nodes[pos].val += 5
+	}
+}
+
 func (astnode *syntaxTreeNode) add() {
 	sum := 0.0
 	for _, v := range astnode.nodes {

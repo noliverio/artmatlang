@@ -126,6 +126,18 @@ func TestValidateExpFail(t *testing.T) {
 	}
 }
 
+func TestTraverse(t *testing.T) {
+
+	a := syntaxTreeNode{oper: 0, val: 5, nodes: nil}
+	b := syntaxTreeNode{oper: 0, val: 2, nodes: nil}
+	c := syntaxTreeNode{oper: 0, val: 0, nodes: []syntaxTreeNode{a, b}}
+
+	c.traverse()
+	for _, node := range c.nodes {
+		fmt.Println(node)
+	}
+}
+
 func TestAdd(t *testing.T) {
 
 	a := syntaxTreeNode{oper: 0, val: 5, nodes: nil}
@@ -189,4 +201,16 @@ func TestExp(t *testing.T) {
 		fmt.Println(c)
 	}
 
+}
+
+func TestEvalutate(t *testing.T) {
+
+	a := syntaxTreeNode{oper: 0, val: 5, nodes: nil}
+	b := syntaxTreeNode{oper: 0, val: 2, nodes: nil}
+	c := syntaxTreeNode{oper: byte('+'), val: 0, nodes: []syntaxTreeNode{a, b}}
+	c.evaluate()
+	if c.val != 7 {
+		t.Fail()
+		fmt.Println(c)
+	}
 }
