@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+func TestPrintSyntaxTreeStart(t *testing.T) {
+	fmt.Println("Starting SyntaxTree Tests")
+}
+
 func TestValidateAddPass(t *testing.T) {
 
 	a := syntaxTreeNode{oper: 0, val: 5, nodes: nil}
