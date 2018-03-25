@@ -2,6 +2,7 @@ package artmatlang
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -18,8 +19,41 @@ func testCreateSubnode(t *testing.T) {
 
 }
 
+func TestHasSubstrings(t *testing.T) {
+
+	initialString := []token{
+		token{token: byte('\x00'), lexeme: []byte{byte('5')}},
+		token{token: byte('+')},
+		token{token: byte('(')},
+		token{token: byte('\x00'), lexeme: []byte{byte('4')}},
+		token{token: byte('+')},
+		token{token: byte('\x00'), lexeme: []byte{byte('2')}},
+		token{token: byte(')')},
+	}
+
+	if !hasSubstrings(initialString) {
+		t.Fail()
+	}
+}
+
 func TestFindSubstrings(t *testing.T) {
 	// pass a string of tokens for 5 + (4 + 2 ) to findSubstring
-	initialString := []token{token{token: byte('\x00')}, token{token: byte('+')}, token{token: byte('(')}, token{token: byte('\x00')}, token{token: byte('+')}, token{token: byte('\x00')}, token{token: byte(')')}}
-	_ = findSubstrings(initialString)
+	initialString := []token{
+		token{token: byte('\x00'), lexeme: []byte{byte('5')}},
+		token{token: byte('+')},
+		token{token: byte('(')},
+		token{token: byte('\x00'), lexeme: []byte{byte('4')}},
+		token{token: byte('+')},
+		token{token: byte('\x00'), lexeme: []byte{byte('2')}},
+		token{token: byte(')')},
+	}
+	expectedSubstring := []token{
+		token{token: byte('\x00'), lexeme: []byte{byte('4')}},
+		token{token: byte('+')},
+		token{token: byte('\x00'), lexeme: []byte{byte('2')}},
+	}
+	substring := findSubstrings(initialString)
+	if !reflect.DeepEqual(substring, expectedSubstring) {
+		t.Fail()
+	}
 }

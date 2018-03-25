@@ -46,22 +46,36 @@ func parseNum() {
 // if there are parens, set hasSubstrings to false
 func hasSubstrings(substring []token) bool {
 
-	hasSubstrings := true
+	hasSubstrings := false
 	for _, token := range substring {
 		if token.token == byte('(') {
-			hasSubstrings = false
+			hasSubstrings = true
 		}
 		if token.token == byte(')') {
-			hasSubstrings = false
+			hasSubstrings = true
 		}
 	}
 	return hasSubstrings
 }
 
+// find first open paren, and coresponding close paren
+// return the substring striped of it's open and close parens
 func findSubstrings(substring []token) []token {
-	// find first open paren, and coresponding close paren
-	for _, token := range substring {
-		fmt.Println(token)
+	openCount := 0
+	openPos := 0
+	closePos := 0
+	for pos, token := range substring {
+		if token.token == byte('(') {
+			if openCount == 0 {
+				openPos = pos + 1
+			}
+			openCount++
+		} else if token.token == byte(')') {
+			openCount--
+			if openCount == 0 {
+				closePos = pos
+			}
+		}
 	}
-	return []token{}
+	return substring[openPos:closePos]
 }
