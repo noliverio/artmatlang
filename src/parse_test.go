@@ -57,3 +57,13 @@ func TestFindSubstrings(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestCreateValueNode(t *testing.T) {
+	initialToken := token{token: byte('\x00'), lexeme: []byte{byte('5')}}
+	returnNode, err := createValueNode(initialToken)
+	panicOnError(err)
+	expectedNode := syntaxTreeNode{oper: byte('V'), val: 8.3}
+	if !reflect.DeepEqual(returnNode, expectedNode) {
+		t.Fail()
+	}
+}

@@ -12,26 +12,17 @@ func Parse(lexedString []token) syntaxTreeNode {
 }
 
 func createSubnode(substring []token) (syntaxTreeNode, error) {
-	// if the substring is one token then that token should be a number,
-	// verify that it is, and create the appropriate value node for it
-	// else return an error
+	// if there is only one token in the list, then create a value node from it
 	if len(substring) == 1 {
-		if substring[0].token == byte('\x00') {
-			//			value := substring[0].lexeme
-			value := 8.3
-			return syntaxTreeNode{val: value, oper: byte('V'), nodes: nil}, nil
-		} else {
-			return syntaxTreeNode{}, fmt.Errorf("expected number token, received %s", substring[0].token)
-		}
+		_, err := createValueNode(substring[0])
+		panicOnError(err)
 	}
 	if hasSubstrings(substring) {
-		findSubstrings(substring)
+		_, err := createSubnode(findSubstrings(substring))
+		panicOnError(err)
 	}
 
-	a := syntaxTreeNode{}
-	b := syntaxTreeNode{}
-	c := syntaxTreeNode{nodes: []syntaxTreeNode{a, b}}
-	return c, nil
+	return syntaxTreeNode{nodes: []syntaxTreeNode{syntaxTreeNode{}, syntaxTreeNode{}}}, nil
 }
 
 // parseNum takes a byte slice of nums and converts them to a number
@@ -78,4 +69,17 @@ func findSubstrings(substring []token) []token {
 		}
 	}
 	return substring[openPos:closePos]
+}
+
+// if the substring is one token then that token should be a number,
+// verify that it is, and create the appropriate value node for it
+// else return an error
+func createValueNode(tokenstring token) (syntaxTreeNode, error) {
+	if tokenstring.token == byte('\x00') {
+		//			value := tokenstring.lexeme
+		value := 8.3
+		return syntaxTreeNode{val: value, oper: byte('V'), nodes: nil}, nil
+	} else {
+		return syntaxTreeNode{}, fmt.Errorf("expected number token, received %s", tokenstring.token)
+	}
 }
