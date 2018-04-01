@@ -67,3 +67,7 @@ func TestCreateValueNode(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestParse(t *testing.T) {
+
+}
